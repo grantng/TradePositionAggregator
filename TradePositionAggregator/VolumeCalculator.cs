@@ -23,43 +23,51 @@ namespace PetroineosAggregatedVolume
         public AggregatedPosition AggregateTrades(IEnumerable<PowerTrade> trades)
         {
             _logger.LogInformation($"Aggregating volumes for {trades.Count()} trades");
-            var totals = new Dictionary<int, double>();
-
-            //Create a key for every unique period over all trades
-            foreach (var t in trades)
+            try
             {
-                foreach (var p in t.Periods)
+                var totals = new Dictionary<int, double>();
+
+                //Create a key for every unique period over all trades
+                foreach (var t in trades)
                 {
-                    if (totals.ContainsKey(p.Period))
+                    foreach (var p in t.Periods)
                     {
-                        totals[p.Period] += p.Volume;
-                    }
-                    else
-                    {
-                        totals[p.Period] = p.Volume;
+                        if (totals.ContainsKey(p.Period))
+                        {
+                            totals[p.Period] += p.Volume;
+                        }
+                        else
+                        {
+                            totals[p.Period] = p.Volume;
+                        }
                     }
                 }
-            }
 
-            var keys = totals.Keys.OrderBy(x => x);
-            var periods = new List<PowerPeriod>();
+                var keys = totals.Keys.OrderBy(x => x);
+                var periods = new List<PowerPeriod>();
 
-            //sum by each period
-            foreach (var p in keys)
-            {
-                var period = new PowerPeriod()
+                //sum by each period
+                foreach (var p in keys)
                 {
-                    Period = p,
-                    Volume = totals[p]
-                };
+                    var period = new PowerPeriod()
+                    {
+                        Period = p,
+                        Volume = totals[p]
+                    };
 
-                periods.Add(period);
+                    periods.Add(period);
+                }
+
+                _logger.LogInformation($"Aggregating volumes for {trades.Count()} trades completed");
+
+
+                return new AggregatedPosition(periods);
             }
-
-            _logger.LogInformation($"Aggregating volumes for {trades.Count()} trades completed");
-
-
-            return new AggregatedPosition(periods);
+            catch (Exception e)
+            {
+                _logger.LogError($"Unable to aggregate trades. Details: {e.Message}");
+                return new AggregatedPosition(new List<PowerPeriod>());
+            }
         }
     }
 }

@@ -61,10 +61,10 @@ namespace PetroineosAggregatedVolume
             if (!await _lock.WaitAsync(0, token))
                 return; // Skip if already running
 
+            var now = DateTime.Now;
+
             try
             {
-                var now = DateTime.Now;
-
                 _logger.LogInformation($"Aggregating trade positions for {now.ToString("yyyy-MM-dd HH:mm")}");
 
                 var trades = await GetTrades(now);
@@ -76,6 +76,10 @@ namespace PetroineosAggregatedVolume
                 _fileWriter.WriteToFile(now, contents);
 
                 _logger.LogInformation($"Completed aggregating trade positions for {now.ToString("yyyy-MM-dd HH:mm")}");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Unable to aggregate positions for {now.ToString("yyyy-MM-dd HH:mm")}.\nDetails: {e.Message}");
             }
             finally
             {

@@ -15,13 +15,21 @@ namespace PetroineosAggregatedVolume
 
         public void WriteToFile(DateTime time, string contents)
         {
-            Directory.CreateDirectory(AppSettings.GetAppSettings().OutputDirectory);
-            var path = GetPath(time);
+            try
+            {
+                Directory.CreateDirectory(AppSettings.GetAppSettings().OutputDirectory);
+                var path = GetPath(time);
 
-            _logger.LogInformation($"Writing file: {path}");
+                _logger.LogInformation($"Writing file: {path}");
 
-            File.WriteAllText(path, contents);
+                File.WriteAllText(path, contents);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Unable to write to file for: {time.ToString("yyyy-MM-dd HH:mm")}\nDetails: {e.Message}");
+            }
         }
+
 
         private string GetFilename(DateTime time)
         {
