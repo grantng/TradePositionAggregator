@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Dependencies/">
+    <File Path="Dependencies/PowerService.dll" />
+  </Folder>
+  <Folder Name="/Solution Items/" />
+  <Project Path="TradePositionAggregator/TradePositionAggregator.csproj" />
+  <Project Path="UnitTests/UnitTests.csproj" Id="effafa02-16fd-459f-b26a-3fe409c74c24" />
+</Solution>
