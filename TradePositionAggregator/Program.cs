@@ -1,8 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
-using TradePositionAggregator.Configuration;
-using Microsoft.Extensions.Configuration;
-using TradePositionAggregator.Extensions;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
+using TradePositionAggregator.Extensions;
 
 namespace TradePositionAggregator
 {
