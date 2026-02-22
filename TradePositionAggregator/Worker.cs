@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using PetroineosAggregatedVolume.Configuration;
-using PetroineosAggregatedVolume.Interfaces;
 using Polly;
 using Polly.Retry;
 using Services;
+using TradePositionAggregator.Configuration;
 using TradePositionAggregator.Interfaces;
 
-namespace PetroineosAggregatedVolume
+namespace TradePositionAggregator
 {
     public class Worker : BackgroundService
     {
@@ -29,7 +28,7 @@ namespace PetroineosAggregatedVolume
             _volumeCalculator = volumeCalculator;
             _appSettings = AppSettings.GetAppSettings();
 
-            //simple retry policy: 3 attempts with 10 second delay
+            //simple retry policy: 3 retry attempts with 10 second delay
             _retryPolicy = Policy
                 .Handle<Exception>()
                 .WaitAndRetryAsync(3, retryAttempt =>
@@ -75,7 +74,7 @@ namespace PetroineosAggregatedVolume
 
                 var contents = _exporter.ExportPositions(now, aggregatedPosition);
 
-                _fileWriter.WriteToFile(now, contents);
+                await _fileWriter.WriteToFileAsync(now, contents);
 
                 _logger.LogInformation("Completed aggregating trade positions for {Time}", now.ToString("yyyy-MM-dd HH:mm"));
             }

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using PetroineosAggregatedVolume.Interfaces;
-using PetroineosAggregatedVolume.Models;
+using TradePositionAggregator.Interfaces;
+using TradePositionAggregator.Models;
 using System.Globalization;
 using System.Text;
 
-namespace PetroineosAggregatedVolume.Exporters
+namespace TradePositionAggregator.Exporters
 {
     public class CsvPositionsExporter : IExporter
     {

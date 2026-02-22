@@ -1,7 +1,7 @@
 ﻿//using System.Configuration;
 using Microsoft.Extensions.Configuration;
 
-namespace PetroineosAggregatedVolume.Configuration
+namespace TradePositionAggregator.Configuration
 {
     public class AppSettings
     {

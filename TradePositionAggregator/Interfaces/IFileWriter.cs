@@ -1,7 +1,7 @@
-﻿namespace PetroineosAggregatedVolume.Interfaces
+﻿namespace TradePositionAggregator.Interfaces
 {
     public interface IFileWriter
     {
-        void WriteToFile(DateTime time, string contents);
+        Task WriteToFileAsync(DateTime time, string contents);
     }
 }

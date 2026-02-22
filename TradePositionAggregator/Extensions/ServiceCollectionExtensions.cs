@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PetroineosAggregatedVolume.Exporters;
-using PetroineosAggregatedVolume.Interfaces;
-using TradePositionAggregator;
+using TradePositionAggregator.Exporters;
 using TradePositionAggregator.Interfaces;
 
-namespace PetroineosAggregatedVolume.Extensions
+namespace TradePositionAggregator.Extensions
 {
     public static class ServiceCollectionExtensions
     {

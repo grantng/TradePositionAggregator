@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
-using PetroineosAggregatedVolume;
+using TradePositionAggregator;
 using Services;
 
 namespace UnitTests

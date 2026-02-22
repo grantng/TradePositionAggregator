@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
-using PetroineosAggregatedVolume;
-using PetroineosAggregatedVolume.Exporters;
+using TradePositionAggregator;
+using TradePositionAggregator.Exporters;
 using Services;
 
 namespace UnitTests

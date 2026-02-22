@@ -1,8 +1,8 @@
-﻿using PetroineosAggregatedVolume.Configuration;
+﻿using TradePositionAggregator.Configuration;
 using Services;
 using System.Text.Json;
 
-namespace PetroineosAggregatedVolume.Models
+namespace TradePositionAggregator.Models
 {
     public class AggregatedPosition
     {

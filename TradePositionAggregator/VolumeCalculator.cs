@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using PetroineosAggregatedVolume.Interfaces;
-using PetroineosAggregatedVolume.Models;
+using TradePositionAggregator.Interfaces;
+using TradePositionAggregator.Models;
 using Services;
 
-namespace PetroineosAggregatedVolume
+namespace TradePositionAggregator
 {
     public class VolumeCalculator : IVolumeCalculator
     {
@@ -18,7 +18,7 @@ namespace PetroineosAggregatedVolume
         {
             if (trades is null)
             {
-                throw new ArgumentNullException("trade collection is a null value. Unable to perform aggregation");
+                throw new ArgumentNullException(nameof(trades));
             }
 
             var tradeList = trades.ToList();
@@ -70,6 +70,7 @@ namespace PetroineosAggregatedVolume
             catch (Exception e)
             {
                 _logger.LogError(e, "Unable to aggregate trades. Details: {Message}", e.Message);
+
                 return new AggregatedPosition(new List<PowerPeriod>());
             }
         }

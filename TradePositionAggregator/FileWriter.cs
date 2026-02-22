@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using PetroineosAggregatedVolume.Configuration;
-using PetroineosAggregatedVolume.Interfaces;
+using TradePositionAggregator.Configuration;
+using TradePositionAggregator.Interfaces;
 
-namespace PetroineosAggregatedVolume
+namespace TradePositionAggregator
 {
     public class FileWriter : IFileWriter
     {
@@ -13,7 +13,7 @@ namespace PetroineosAggregatedVolume
             _logger = logger;
         }
 
-        public void WriteToFile(DateTime time, string contents)
+        public async Task WriteToFileAsync(DateTime time, string contents)
         {
             try
             {
@@ -22,11 +22,12 @@ namespace PetroineosAggregatedVolume
 
                 _logger.LogInformation("Writing file: {Path}", path);
 
-                File.WriteAllText(path, contents);
+                await File.WriteAllTextAsync(path, contents);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Unable to write to file for: {Time}\nDetails: {Message}", time.ToString("yyyy-MM-dd HH:mm"), e.Message);
+                throw;
             }
         }
 

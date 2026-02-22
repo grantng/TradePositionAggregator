@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace PetroineosAggregatedVolume.Configuration
+namespace TradePositionAggregator.Configuration
 {
     public class JsonOptions
     {

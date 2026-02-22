@@ -1,7 +1,7 @@
-﻿using PetroineosAggregatedVolume.Models;
+﻿using TradePositionAggregator.Models;
 using Services;
 
-namespace PetroineosAggregatedVolume.Interfaces
+namespace TradePositionAggregator.Interfaces
 {
     public interface IVolumeCalculator
     {

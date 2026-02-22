@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
-using PetroineosAggregatedVolume.Configuration;
-using PetroineosAggregatedVolume.Extensions;
+using TradePositionAggregator.Configuration;
+using TradePositionAggregator.Extensions;
 using Serilog;
 
 namespace TradePositionAggregator

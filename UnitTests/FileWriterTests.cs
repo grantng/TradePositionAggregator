@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
-using PetroineosAggregatedVolume;
-using PetroineosAggregatedVolume.Configuration;
+using TradePositionAggregator;
+using TradePositionAggregator.Configuration;
 
 namespace UnitTests
 {
@@ -21,7 +21,7 @@ namespace UnitTests
             var contents = "unit test contents";
 
 
-            _fileWriter.WriteToFile(now, contents);
+            _fileWriter.WriteToFileAsync(now, contents).GetAwaiter().GetResult();
 
             var outputDirectory = AppSettings.GetAppSettings().OutputDirectory;
             var filename = $"PowerPosition_{now.ToString("yyyyMMdd_HHmm")}.csv";

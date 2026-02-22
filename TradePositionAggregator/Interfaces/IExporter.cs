@@ -1,6 +1,6 @@
-﻿using PetroineosAggregatedVolume.Models;
+﻿using TradePositionAggregator.Models;
 
-namespace PetroineosAggregatedVolume.Interfaces
+namespace TradePositionAggregator.Interfaces
 {
     public interface IExporter
     {
