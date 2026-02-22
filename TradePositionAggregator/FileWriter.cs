@@ -30,7 +30,6 @@ namespace PetroineosAggregatedVolume
             }
         }
 
-
         private string GetFilename(DateTime time)
         {
             return $"PowerPosition_{time.ToString("yyyyMMdd_HHmm")}.csv";

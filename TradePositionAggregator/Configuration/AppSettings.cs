@@ -20,7 +20,13 @@ namespace PetroineosAggregatedVolume.Configuration
 
                 _appSettings = config
                     .GetSection("AppSettings")
-                    .Get<AppSettings>();
+                    .Get<AppSettings>() ?? new AppSettings();
+
+                // Ensure IntervalMinutes > 0 otherwise default to 1
+                if (_appSettings.IntervalMinutes <= 0)
+                {
+                    _appSettings.IntervalMinutes = 1;
+                }
             }
 
             return _appSettings;

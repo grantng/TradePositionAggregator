@@ -14,6 +14,7 @@ namespace PetroineosAggregatedVolume.Exporters
         {
             _logger = logger;
         }
+
         public string ExportPositions(DateTime date, AggregatedPosition positions)
         {
             _logger.LogInformation("Exporting positions for {Time}", date.ToString("yyyy-MM-dd HH:mm"));
