@@ -25,7 +25,7 @@ namespace UnitTests
 
             Assert.That(aggregatedVolumes.Periods.Count, Is.EqualTo(trade.Periods.Length));
 
-            foreach(var period in trade.Periods)
+            foreach (var period in trade.Periods)
             {
                 var aggregatedPeriod = aggregatedVolumes.Periods.FirstOrDefault(x => x.Period == period.Period);
                 Assert.That(aggregatedPeriod, Is.Not.Null);

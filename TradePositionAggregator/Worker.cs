@@ -5,6 +5,7 @@ using PetroineosAggregatedVolume.Interfaces;
 using Polly;
 using Polly.Retry;
 using Services;
+using TradePositionAggregator.Interfaces;
 
 namespace PetroineosAggregatedVolume
 {
@@ -12,16 +13,17 @@ namespace PetroineosAggregatedVolume
     {
         private readonly ILogger<Worker> _logger;
         private readonly SemaphoreSlim _lock = new(1, 1);
-        private PowerService _powerService = new PowerService();
+        private ITradeRepository _tradeRepository;
         private IVolumeCalculator _volumeCalculator;
         private IFileWriter _fileWriter;
         private IExporter _exporter;
         private AppSettings _appSettings;
         private AsyncRetryPolicy _retryPolicy;
 
-        public Worker(ILogger<Worker> logger, IVolumeCalculator volumeCalculator, IExporter exporter, IFileWriter fileWriter)
+        public Worker(ILogger<Worker> logger, ITradeRepository tradeRepository, IVolumeCalculator volumeCalculator, IExporter exporter, IFileWriter fileWriter)
         {
             _logger = logger;
+            _tradeRepository = tradeRepository;
             _exporter = exporter;
             _fileWriter = fileWriter;
             _volumeCalculator = volumeCalculator;
@@ -37,9 +39,9 @@ namespace PetroineosAggregatedVolume
         protected override async Task ExecuteAsync(CancellationToken token)
         {
             _logger.LogInformation("Service started");
-            _logger.LogInformation($"AppSettings: {_appSettings.ToString()}");
+            _logger.LogInformation("AppSettings: {Settings}", _appSettings.ToString());
 
-            var timer = new PeriodicTimer(TimeSpan.FromMinutes(_appSettings.IntervalMinutes));
+            using var timer = new PeriodicTimer(TimeSpan.FromMinutes(_appSettings.IntervalMinutes));
 
             await RunJobAsync(token);
 
@@ -65,7 +67,7 @@ namespace PetroineosAggregatedVolume
 
             try
             {
-                _logger.LogInformation($"Aggregating trade positions for {now.ToString("yyyy-MM-dd HH:mm")}");
+                _logger.LogInformation("Aggregating trade positions for {Time}", now.ToString("yyyy-MM-dd HH:mm"));
 
                 var trades = await GetTrades(now);
 
@@ -75,11 +77,11 @@ namespace PetroineosAggregatedVolume
 
                 _fileWriter.WriteToFile(now, contents);
 
-                _logger.LogInformation($"Completed aggregating trade positions for {now.ToString("yyyy-MM-dd HH:mm")}");
+                _logger.LogInformation("Completed aggregating trade positions for {Time}", now.ToString("yyyy-MM-dd HH:mm"));
             }
             catch (Exception e)
             {
-                _logger.LogError($"Unable to aggregate positions for {now.ToString("yyyy-MM-dd HH:mm")}.\nDetails: {e.Message}");
+                _logger.LogError(e, "Unable to aggregate positions for {Time}.\nDetails: {Message}", now.ToString("yyyy-MM-dd HH:mm"), e.Message);
             }
             finally
             {
@@ -91,16 +93,21 @@ namespace PetroineosAggregatedVolume
         {
             try
             {
-                var trades = await _retryPolicy.ExecuteAsync(() => _powerService.GetTradesAsync(date));
+                var trades = await _retryPolicy.ExecuteAsync(() => _tradeRepository.GetTradesAsync(date));
 
                 return trades;
             }
             catch (Exception e)
             {
-                _logger.LogError($"Unable to retrieve trades for {date.ToString("yyyy-MM-dd HH:mm")}");
+                _logger.LogError(e, "Unable to retrieve trades for {Time}", date.ToString("yyyy-MM-dd HH:mm"));
+                throw;
             }
+        }
 
-            return new List<PowerTrade>();
+        public override void Dispose()
+        {
+            _lock?.Dispose();
+            base.Dispose();
         }
     }
 }

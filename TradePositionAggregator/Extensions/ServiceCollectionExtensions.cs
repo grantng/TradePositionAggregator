@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PetroineosAggregatedVolume.Exporters;
 using PetroineosAggregatedVolume.Interfaces;
+using TradePositionAggregator;
+using TradePositionAggregator.Interfaces;
 
 namespace PetroineosAggregatedVolume.Extensions
 {
@@ -9,9 +11,10 @@ namespace PetroineosAggregatedVolume.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddHostedService<Worker>();
-            services.AddScoped<IExporter, CsvPositionsExporter>();
-            services.AddScoped<IFileWriter, FileWriter>();
-            services.AddScoped<IVolumeCalculator, VolumeCalculator>();
+            services.AddSingleton<IExporter, CsvPositionsExporter>();
+            services.AddSingleton<IFileWriter, FileWriter>();
+            services.AddSingleton<IVolumeCalculator, VolumeCalculator>();
+            services.AddSingleton<ITradeRepository, TradeRepository>();
             return services;
         }
     }

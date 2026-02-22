@@ -20,13 +20,13 @@ namespace PetroineosAggregatedVolume
                 Directory.CreateDirectory(AppSettings.GetAppSettings().OutputDirectory);
                 var path = GetPath(time);
 
-                _logger.LogInformation($"Writing file: {path}");
+                _logger.LogInformation("Writing file: {Path}", path);
 
                 File.WriteAllText(path, contents);
             }
             catch (Exception e)
             {
-                _logger.LogError($"Unable to write to file for: {time.ToString("yyyy-MM-dd HH:mm")}\nDetails: {e.Message}");
+                _logger.LogError(e, "Unable to write to file for: {Time}\nDetails: {Message}", time.ToString("yyyy-MM-dd HH:mm"), e.Message);
             }
         }
 

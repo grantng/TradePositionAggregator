@@ -3,7 +3,7 @@ using PetroineosAggregatedVolume.Configuration;
 using PetroineosAggregatedVolume.Extensions;
 using Serilog;
 
-namespace PetroineosAggregatedVolume
+namespace TradePositionAggregator
 {
     internal class Program
     {
@@ -36,7 +36,7 @@ namespace PetroineosAggregatedVolume
         {
             var logDirectory = AppSettings.GetAppSettings().LogDirectory;
             Directory.CreateDirectory(logDirectory);
-            var path = Path.Combine(logDirectory, "log -.txt");
+            var path = Path.Combine(logDirectory, "log-.txt");
 
             Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()

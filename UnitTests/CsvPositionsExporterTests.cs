@@ -1,10 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Extensions.Logging.Abstractions;
 using PetroineosAggregatedVolume;
-using Services;
-using Microsoft.Extensions.Logging.Abstractions;
-using System;
-using System.Linq;
 using PetroineosAggregatedVolume.Exporters;
+using Services;
 
 namespace UnitTests
 {
@@ -67,7 +64,7 @@ namespace UnitTests
 
             // Ensure volumes appear in CSV
             var times = lines.Skip(1).Select(l => l.Split(',')[0]).ToArray();
-            Assert.That(times, Is.EquivalentTo(new[] { "23:00", "00:00","02:00", "03:00", "04:00", "05:00", }));
+            Assert.That(times, Is.EquivalentTo(new[] { "23:00", "00:00", "02:00", "03:00", "04:00", "05:00", }));
 
             // Ensure local times appear in CSV
             var volumes = lines.Skip(1).Select(l => l.Split(',')[1]).ToArray();

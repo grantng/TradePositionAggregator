@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Services;
+﻿using Services;
 
 namespace UnitTests
 {
@@ -13,7 +10,7 @@ namespace UnitTests
 
             var i = 0;
 
-            foreach(var volume in volumes)
+            foreach (var volume in volumes)
             {
                 trade.Periods[i++].Volume = volume;
             }

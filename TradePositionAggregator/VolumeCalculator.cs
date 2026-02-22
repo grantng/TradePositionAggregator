@@ -16,13 +16,23 @@ namespace PetroineosAggregatedVolume
 
         public AggregatedPosition AggregateTrades(IEnumerable<PowerTrade> trades)
         {
-            _logger.LogInformation($"Aggregating volumes for {trades.Count()} trades");
+            if (trades is null)
+            {
+                throw new ArgumentNullException("trade collection is a null value. Unable to perform aggregation");
+            }
+
+            var tradeList = trades.ToList();
+
+            var count = tradeList.Count;
+
+            _logger.LogInformation("Aggregating volumes for {Count} trades", count);
+
             try
             {
                 var totals = new Dictionary<int, double>();
 
                 //Create a key for every unique period over all trades
-                foreach (var t in trades)
+                foreach (var t in tradeList)
                 {
                     //sum by each period
                     foreach (var p in t.Periods)
@@ -53,14 +63,13 @@ namespace PetroineosAggregatedVolume
                     periods.Add(period);
                 }
 
-                _logger.LogInformation($"Aggregating volumes for {trades.Count()} trades completed");
-
+                _logger.LogInformation("Aggregating volumes for {Count} trades completed", count);
 
                 return new AggregatedPosition(periods);
             }
             catch (Exception e)
             {
-                _logger.LogError($"Unable to aggregate trades. Details: {e.Message}");
+                _logger.LogError(e, "Unable to aggregate trades. Details: {Message}", e.Message);
                 return new AggregatedPosition(new List<PowerPeriod>());
             }
         }
